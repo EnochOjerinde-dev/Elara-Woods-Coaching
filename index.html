@@ -20,9 +20,11 @@
             --font-sans: 'Inter', sans-serif;
             
             --transition-slow: all 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
-            --transition-med: all 0.4s ease;
+            --transition-med: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             
             --spacing-section: 120px;
+            --radius-soft: 16px; /* Modern rounded corners */
+            --radius-pill: 100px;
         }
 
         * {
@@ -131,7 +133,7 @@
             background-color: var(--color-charcoal);
             color: var(--color-white);
             text-decoration: none;
-            border-radius: 2px;
+            border-radius: var(--radius-pill); /* Rounded buttons */
             font-size: 0.95rem;
             letter-spacing: 1px;
             transition: var(--transition-med);
@@ -142,20 +144,16 @@
         .btn:hover {
             background-color: transparent;
             color: var(--color-charcoal);
-        }
-
-        .btn-secondary {
-            background-color: transparent;
-            color: var(--color-charcoal);
-            border-color: var(--color-olive);
+            transform: translateY(-2px);
         }
 
         /* --- Hero Section --- */
         .hero {
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             align-items: center;
-            background: radial-gradient(circle at 10% 20%, rgba(183, 183, 164, 0.1) 0%, transparent 50%);
+            background: radial-gradient(circle at 10% 20%, rgba(183, 183, 164, 0.15) 0%, transparent 50%);
+            padding: 140px 0 80px 0;
         }
 
         .hero-content {
@@ -173,28 +171,40 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* --- Global Hover Shape Style --- */
+        .hover-shape {
+            transition: var(--transition-med);
+            cursor: pointer;
+            border: 1px solid rgba(107, 112, 92, 0.15);
+            border-radius: var(--radius-soft); /* Applied rounding here */
+            overflow: hidden;
+        }
+
+        .hover-shape:hover {
+            background-color: var(--color-charcoal) !important;
+            color: var(--color-sand) !important;
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border-color: var(--color-charcoal);
+        }
+
         /* --- Problem Section --- */
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
             margin-top: 60px;
         }
 
         .card {
             background: rgba(255, 255, 255, 0.4);
-            padding: 50px 40px;
-            border-radius: 4px;
-            border: 1px solid rgba(107, 112, 92, 0.05);
-            transition: var(--transition-med);
+            padding: 60px 40px;
             opacity: 0;
             transform: translateY(20px);
-        }
-
-        .card:hover {
-            background: var(--color-white);
-            border-color: var(--color-clay);
-            transform: translateY(-5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
         }
 
         /* --- About Section --- */
@@ -209,10 +219,17 @@
             width: 400px;
             height: 500px;
             background: var(--color-clay);
-            border-radius: 200px 200px 0 0;
+            border-radius: 200px 200px var(--radius-soft) var(--radius-soft); /* Rounded bottom corners too */
             position: relative;
             overflow: hidden;
             transition: var(--transition-slow);
+        }
+        
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
 
         .about-text {
@@ -237,7 +254,7 @@
 
         .process-item {
             text-align: center;
-            padding: 40px;
+            padding: 60px 40px;
         }
 
         .icon-line {
@@ -252,6 +269,11 @@
             stroke: var(--color-olive);
             stroke-width: 1;
             fill: none;
+            transition: var(--transition-med);
+        }
+
+        .process-item:hover .icon-line svg {
+            stroke: var(--color-sand);
         }
 
         /* --- Transformation Section --- */
@@ -261,24 +283,40 @@
             gap: 0;
             border: 1px solid var(--color-clay);
             margin-top: 60px;
+            border-radius: var(--radius-soft); /* Rounded the whole grid */
+            overflow: hidden;
+            background-color: var(--color-white); /* Light side bg */
         }
 
         .trans-col {
             padding: 80px 60px;
         }
 
-        .trans-col:first-child {
-            border-right: 1px solid var(--color-clay);
-            background: rgba(107, 112, 92, 0.05);
+        /* Dark Feel for "From" column */
+        .trans-col.from {
+            background: var(--color-charcoal);
+            color: var(--color-sand);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .trans-col h3 { margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; font-family: var(--font-sans); font-weight: 600; }
+        .trans-col h3 { 
+            margin-bottom: 30px; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            font-size: 0.9rem; 
+            font-family: var(--font-sans); 
+            font-weight: 600; 
+        }
 
         .trans-list { list-style: none; }
         .trans-list li {
             padding: 15px 0;
             border-bottom: 1px solid rgba(107, 112, 92, 0.1);
             position: relative;
+        }
+
+        .from .trans-list li {
+            border-bottom: 1px solid rgba(244, 241, 234, 0.1);
         }
 
         /* --- Offers Section --- */
@@ -291,14 +329,66 @@
 
         .offer-card {
             padding: 60px 40px;
-            border: 1px solid var(--color-clay);
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 220px;
+        }
+
+        /* --- FAQ Section --- */
+        .faq-section {
+            background-color: rgba(183, 183, 164, 0.1);
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 60px auto 0 auto;
+            text-align: left;
+        }
+
+        .faq-item {
+            background: var(--color-white);
+            margin-bottom: 16px;
+            border-radius: var(--radius-soft);
+            overflow: hidden;
+            border: 1px solid rgba(107, 112, 92, 0.1);
             transition: var(--transition-med);
         }
 
-        .offer-card:hover {
-            background-color: var(--color-charcoal);
-            color: var(--color-sand);
+        .faq-question {
+            padding: 25px 30px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+            font-weight: 400;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+            padding: 0 30px;
+            opacity: 0.8;
+            font-size: 1rem;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 300px; /* Large enough for content */
+            padding-bottom: 30px;
+        }
+
+        .faq-icon {
+            transition: transform 0.3s ease;
+            width: 20px;
+            height: 20px;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
         }
 
         /* --- Footer --- */
@@ -334,15 +424,63 @@
         }
 
         /* --- Mobile Responsive --- */
+        @media (max-width: 1024px) {
+            .container { padding: 0 30px; }
+            .about-flex { gap: 40px; }
+            .about-image { width: 340px; height: 440px; }
+        }
+
         @media (max-width: 900px) {
-            .about-flex, .process-grid, .transformation-grid, .offer-cards, .footer-content {
+            :root { --spacing-section: 80px; }
+            
+            .about-flex {
                 flex-direction: column;
+                text-align: center;
+            }
+            .about-image { 
+                width: 100%; 
+                max-width: 400px; 
+                height: 450px; 
+                margin: 0 auto; 
+            }
+            .alignment-line {
+                border-left: none;
+                border-top: 1px solid var(--color-olive);
+                padding: 30px 0 0 0;
+            }
+
+            .process-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .transformation-grid {
                 grid-template-columns: 1fr;
             }
-            .about-image { width: 100%; height: 400px; }
-            .trans-col:first-child { border-right: none; border-bottom: 1px solid var(--color-clay); }
+            .trans-col.from { 
+                border-right: none; 
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+            }
+
+            .offer-cards {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 40px;
+                text-align: center;
+            }
+            .social-links { justify-content: center !important; }
             .nav-links { display: none; }
-            section { padding: 80px 0; }
+        }
+
+        @media (max-width: 480px) {
+            .container { padding: 0 20px; }
+            .hero { padding-top: 120px; }
+            .trans-col { padding: 40px 20px; }
+            .card, .process-item, .offer-card { padding: 40px 20px; }
         }
     </style>
 </head>
@@ -354,6 +492,7 @@
             <div class="nav-links">
                 <a href="#about">The Approach</a>
                 <a href="#work">Work With Me</a>
+                <a href="#faq">FAQs</a>
                 <a href="#contact" class="text-muted">Book Call</a>
             </div>
         </div>
@@ -374,19 +513,19 @@
         <div class="container centered">
             <h2>If This Sounds Like You, You’re Not Alone</h2>
             <div class="cards-grid">
-                <div class="card">
+                <div class="card hover-shape">
                     <p>You’ve outgrown an old version of yourself, but don’t know what comes next</p>
                 </div>
-                <div class="card">
+                <div class="card hover-shape">
                     <p>Life looks “fine” on the outside, but feels empty or misaligned inside</p>
                 </div>
-                <div class="card">
+                <div class="card hover-shape">
                     <p>You’re tired of living by expectations that no longer fit</p>
                 </div>
-                <div class="card">
+                <div class="card hover-shape">
                     <p>You feel disconnected from your inner voice</p>
                 </div>
-                <div class="card">
+                <div class="card hover-shape">
                     <p>You’ve changed… but your life hasn’t caught up yet</p>
                 </div>
             </div>
@@ -398,8 +537,9 @@
         <div class="container">
             <div class="about-flex">
                 <div class="about-image">
-                    <!-- Image Placeholder -->
-                    <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:white; font-family:var(--font-serif)">
+                    <!-- Name your file 'portrait.jpg' and upload it -->
+                    <img src="portrait.jpg" alt="Elara Woods Portrait" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div style="display:none; width:100%; height:100%; align-items:center; justify-content:center; color:white; font-family:var(--font-serif)">
                         Portrait Placeholder
                     </div>
                 </div>
@@ -416,19 +556,19 @@
         <div class="container centered">
             <h2>How We Work Together</h2>
             <div class="process-grid">
-                <div class="process-item">
+                <div class="process-item hover-shape">
                     <div class="icon-line">
                         <svg viewBox="0 0 24 24"><path d="M12 2L12 22M2 12L22 12M5 5L19 19M19 5L5 19"/></svg>
                     </div>
                     <h3>Unravel the Old Identity</h3>
                 </div>
-                <div class="process-item">
+                <div class="process-item hover-shape">
                     <div class="icon-line">
                         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8L12 16M8 12L16 12"/></svg>
                     </div>
                     <h3>Reconnect with Inner Truth</h3>
                 </div>
-                <div class="process-item">
+                <div class="process-item hover-shape">
                     <div class="icon-line">
                         <svg viewBox="0 0 24 24"><path d="M12 3L4 9V21H20V9L12 3Z"/></svg>
                     </div>
@@ -442,7 +582,8 @@
     <section class="transformation reveal">
         <div class="container">
             <div class="transformation-grid">
-                <div class="trans-col">
+                <!-- DARK "FROM" COLUMN -->
+                <div class="trans-col from">
                     <h3>From</h3>
                     <ul class="trans-list">
                         <li>Confusion and self-doubt</li>
@@ -451,7 +592,8 @@
                         <li>Questioning who you really are</li>
                     </ul>
                 </div>
-                <div class="trans-col">
+                <!-- LIGHT "TO" COLUMN -->
+                <div class="trans-col to">
                     <h3>To</h3>
                     <ul class="trans-list">
                         <li>Clarity and inner stability</li>
@@ -468,17 +610,86 @@
         <div class="container centered">
             <h2>Ways to Work Together</h2>
             <div class="offer-cards">
-                <div class="offer-card">
+                <div class="offer-card hover-shape">
                     <h3>1:1 Identity Realignment Coaching</h3>
                 </div>
-                <div class="offer-card">
+                <div class="offer-card hover-shape">
                     <h3>“Return to Self” — 8-Week Journey</h3>
                 </div>
-                <div class="offer-card">
+                <div class="offer-card hover-shape">
                     <h3>Guided Reflection & Integration Sessions</h3>
                 </div>
             </div>
             <p class="punchline">This work meets you where you are — and walks with you forward.</p>
+        </div>
+    </section>
+
+    <section id="faq" class="faq-section reveal">
+        <div class="container centered">
+            <h2>FAQs — Elara</h2>
+            <p class="text-muted">(Confidence Coach for Sensitive, Ambitious Women)</p>
+            
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Who is this coaching for?
+                        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    </div>
+                    <div class="faq-answer">
+                        This is for ambitious women who are sensitive, thoughtful, and often stuck in their own head — especially those who want confidence without losing their depth or empathy.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        I overthink a lot. Will this actually help?
+                        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    </div>
+                    <div class="faq-answer">
+                        Yes. The work focuses on quieting mental noise, building self-trust, and helping you respond instead of spiraling.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Do I need to be confident already to start?
+                        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    </div>
+                    <div class="faq-answer">
+                        Not at all. Confidence is built through clarity and alignment — that’s what we work on together.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Is this mindset coaching or emotional healing?
+                        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    </div>
+                    <div class="faq-answer">
+                        It’s practical mindset and confidence coaching, grounded in self-awareness and real-life application — not therapy.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How long before I notice changes?
+                        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    </div>
+                    <div class="faq-answer">
+                        Most clients notice shifts in clarity, self-trust, and emotional calm within the first few weeks.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Is this 1:1 or group-based?
+                        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    </div>
+                    <div class="faq-answer">
+                        Primary work is 1:1, with optional guided sessions and resources depending on the program.
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -501,11 +712,8 @@
                 </div>
                 <div style="text-align: right;">
                     <div class="social-links" style="justify-content: flex-end; margin-bottom: 20px;">
-                        <!-- Instagram -->
                         <a href="#"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
-                        <!-- LinkedIn -->
                         <a href="#"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
-                        <!-- Calendar -->
                         <a href="#"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></a>
                     </div>
                     <p style="opacity: 0.5; font-size: 0.8rem;">© 2024 Elara Woods. All rights reserved.</p>
@@ -523,6 +731,22 @@
             } else {
                 nav.classList.remove('scrolled');
             }
+        });
+
+        // FAQ Toggle Logic
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const item = question.parentElement;
+                const isActive = item.classList.contains('active');
+                
+                // Close others
+                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+                
+                // Open clicked if it wasn't active
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
         });
 
         // Scroll Intersection Observer for Animations
@@ -554,12 +778,14 @@
 
         // Subtle Parallax for About Image
         window.addEventListener('scroll', () => {
-            const aboutImage = document.querySelector('.about-image');
-            const speed = 0.05;
-            const rect = aboutImage.getBoundingClientRect();
-            if (rect.top < window.innerHeight && rect.bottom > 0) {
-                const shift = (window.innerHeight - rect.top) * speed;
-                aboutImage.style.transform = `translateY(${shift}px)`;
+            if (window.innerWidth > 900) {
+                const aboutImage = document.querySelector('.about-image');
+                const speed = 0.05;
+                const rect = aboutImage.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    const shift = (window.innerHeight - rect.top) * speed;
+                    aboutImage.style.transform = `translateY(${shift}px)`;
+                }
             }
         });
     </script>
